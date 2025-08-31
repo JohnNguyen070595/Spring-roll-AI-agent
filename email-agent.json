@@ -1,0 +1,177 @@
+{
+  "name": "email-agent",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e0a4f4e2-ba58-449f-82ab-80590ff2a0a0",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-5-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        144,
+        224
+      ],
+      "id": "121ff32a-27ee-4d24-8baa-3d95d1833f3c",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "2YBTpmTtDSc7VGIp",
+          "name": "Tdech"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "senderName": "SpringRoll AI"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        496,
+        240
+      ],
+      "id": "c62decf2-c943-42ff-a321-c3c1a9606a58",
+      "name": "Send Email",
+      "webhookId": "d22656f1-f909-4834-8167-17e69ac9bc3b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "SveN9x9ghV4l7DWN",
+          "name": "GoogleAuth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "base": {
+          "__rl": true,
+          "value": "appZycz8cWgipEF4E",
+          "mode": "list",
+          "cachedResultName": "Contact Services",
+          "cachedResultUrl": "https://airtable.com/appZycz8cWgipEF4E"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl2QqjdgHZUOkQuI",
+          "mode": "list",
+          "cachedResultName": "Table 2",
+          "cachedResultUrl": "https://airtable.com/appZycz8cWgipEF4E/tbl2QqjdgHZUOkQuI"
+        },
+        "id": "=",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        320,
+        272
+      ],
+      "id": "4ce66186-c841-4c03-a128-f6c5e9f47015",
+      "name": "Contacts",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "L75IwbpV6liiqn4c",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.query }}",
+        "options": {
+          "systemMessage": "# Objective\nYou are an email agent. Your job is to match email contact with the user's query and send the email to the correct email"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "9e951eb0-52f7-424c-b43d-b9a0057ac8ac",
+      "name": "Email Agent"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Email Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Email Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Email": {
+      "ai_tool": [
+        [
+          {
+            "node": "Email Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contacts": {
+      "ai_tool": [
+        [
+          {
+            "node": "Email Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a1dc7718-c767-4b6b-ba0d-dad66543ba35",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ec6d33456001012c838ca904482c074b8c7915fee442bd64c98e107a7cc73a2f"
+  },
+  "id": "78xZecrrjLiCtPNX",
+  "tags": []
+}
