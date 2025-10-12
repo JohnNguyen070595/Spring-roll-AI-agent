@@ -3,7 +3,7 @@ AI agent solution that support South Australian community
 
 # Breaking the Cycle: From Food Insecurity to Community Empowerment
 
-## Project Description  
+
 
 **Springroll AI** is an autonomous AI agent that bridges the critical gap between **community need** and **service access**.  
 
